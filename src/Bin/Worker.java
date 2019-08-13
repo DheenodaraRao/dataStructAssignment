@@ -31,16 +31,54 @@ public class Worker extends AbstractWorker {
 		
 		//joblist is empty
 		if(jobList.isEmpty()) {
-			jobList.add(job);
+			jobList.addFirst(job);
 			job.setStartDate(0);
 			job.setEndDate(job.getStartDate() + job.getJobDuration());
 			return true;
 		}
 		
 		//add infront of the list
+		System.out.println("Trying to add at the front . . .");
+		Job firstJob = jobList.getFirst();
+		int period = firstJob.getStartDate();
 		
+		if(firstJob.getStartDate() != 0 && job.getJobDuration() <= period && job.getDeadline() >= (0 + job.getJobDuration())){
+			jobList.addFirst(job);
+			job.setStartDate(0);
+			job.setEndDate(job.getStartDate() + job.getJobDuration());
+			return true;
+		}
+		
+		//add in between
+		if(jobList.size() >= 2) {
+			Job first = null;
+			Job second = null;
+			
+			for(int i = 0; i < jobList.size() - 1; i++) {
+				first = jobList.get(i);
+				second = jobList.get(1);
+				period = second.getStartDate() - first.getEndDate();
+				
+				if(job.getJobDuration() <= period && job.getDeadline() >= (first.getEndDate() + job.getJobDuration())) {
+					jobList.add(i, job);
+					job.setStartDate(first.getEndDate());
+					job.setEndDate(job.getStartDate() + job.getJobDuration());
+					return true;
+				}
+			}
+		}
+		System.out.println("Trying to add at the end . . .");
 		//add at the end of the list
+		Job lastJob = jobList.getLast();
 		
+		period = 40 - lastJob.getEndDate();
+		
+		if(job.getJobDuration() <= period && job.getDeadline() >= (lastJob.getEndDate() + job.getJobDuration())) {
+			jobList.addLast(job);
+			job.setStartDate(lastJob.getEndDate());
+			job.setEndDate(job.getStartDate() + job.getJobDuration());
+			return true;
+		}
 		
 		return false;
 		
