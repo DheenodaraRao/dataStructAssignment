@@ -47,6 +47,7 @@ public class SampleData {
 		Job j14 = new Job(10, 5, 20);
 		Job j15 = new Job(10, 5, 20);
 		Job j16 = new Job(10, 5, 20);
+		Job j17 = new Job(5, 6, 10);
 		
 		joblist.add(j1);
 		joblist.add(j2);
@@ -64,7 +65,7 @@ public class SampleData {
 		joblist.add(j14);
 		joblist.add(j15);
 		joblist.add(j16);
-		
+		joblist.add(j17);
 		
 		
 		Job aJob = null;
@@ -78,16 +79,21 @@ public class SampleData {
 			
 		}
 		
-		System.out.println("Worker Schedule");
+		int priorities = 0;
+		
+		System.out.println("\n--------- Worker Schedule --------- ");
 		for(Worker aWorker: workerlist) {
+			priorities = 0;
+			System.out.println("\nName:  "   + aWorker.getWorkerName());
 			for (Job job : aWorker.getJobList()) {
-				System.out.println("Name:  "   + aWorker.getWorkerName());
-				System.out.println("Job:  "   + job.getStartDate() + "    " + job.getEndDate());
+				priorities = priorities + job.getJobPriority();
+				System.out.print("Job: " + job.getJobId() + " \tStart:"   + job.getStartDate() + " \tEnd: " + job.getEndDate() + " ");
 				System.out.println();
 			}
+			System.out.println("Total Priority Index: " + priorities);
 		}
 		
-		System.out.println("Unassigned Jobs");
+		System.out.println("\nUnassigned Jobs");
 		for (Job uAJob : unassignedJoblist) {
 			System.out.println("Job:  "   + uAJob.getJobId());
 			System.out.println();
